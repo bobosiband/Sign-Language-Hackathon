@@ -1,9 +1,13 @@
 # Uxhumano
 
+<<<<<<< HEAD
 **Uxhumano** ("connection" / "communication" in isiZulu) turns webcam
 fingerspelling into typed text and spoken audio, in real time, entirely in
 the browser -- with a small Python backend doing only the letter
 classification.
+=======
+## Lets start cooking 
+>>>>>>> 14dfbb5ca52ae6ed61b2369f444ff6d415cdaa34
 
 It's built as a communication aid for Deaf and hard-of-hearing users, and
 as a learning tool that teaches hearing people the ASL fingerspelling
