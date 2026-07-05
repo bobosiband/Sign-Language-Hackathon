@@ -9,6 +9,7 @@ Bheka docs/API.md ukuze uthole yonke imininingwane yezicelo nezimpendulo
 from __future__ import annotations
 
 import logging
+from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
@@ -20,20 +21,6 @@ from app.izimo import IZIMO_ZEZINHLAMVU, IZINHLAMVU_EZISEKELWAYO
 from app.ukulinganisa import INANI_LEZINOMBOLO
 
 INGXENYE_YOKUQEQESHA = logging.getLogger("uxhumano")
-
-app = FastAPI(
-    title="Uxhumano API",
-    description="I-backend ye-Uxhumano: uhlelo lokuguqula uphawu lwesandla lube umbhalo (backend for Uxhumano, the sign-to-text-to-speech accessibility tool).",
-    version="1.0.0",
-)
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=False,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 # Imodeli esesikhundleni, ilayishwa uma i-app iqala (the live in-memory model,
 # loaded once at process startup).
@@ -47,19 +34,36 @@ imodeli_esebenzayo = Imodeli()
 IZIBONELO_ZOMSEBENZISI: dict[str, list[list[float]]] = {}
 
 
-@app.on_event("startup")
-def qala_imodeli() -> None:
+@asynccontextmanager
+async def impilo_ye_app(app: FastAPI):
     """Layisha imodeli esifundisiwe kusengaphambili, noma yakhe entsha uma
     ingekho (load the shipped pretrained model, or train a fresh one if the
     artifact is missing)."""
+    global imodeli_esebenzayo
     try:
-        global imodeli_esebenzayo
         imodeli_esebenzayo = Imodeli.layisha(INDLELA_EMISIWE_YEMODELI)
         INGXENYE_YOKUQEQESHA.info("Imodeli ilayishiwe (model loaded) from %s", INDLELA_EMISIWE_YEMODELI)
     except FileNotFoundError:
         INGXENYE_YOKUQEQESHA.warning("Ayikho imodeli elondoloziwe, kuqeqeshwa entsha (no saved model found, training a fresh one)")
         amaphuzu, izinhlamvu = qamba_idatha_yokuqeqesha()
         imodeli_esebenzayo.qeqesha(amaphuzu, izinhlamvu)
+    yield
+
+
+app = FastAPI(
+    title="Uxhumano API",
+    description="I-backend ye-Uxhumano: uhlelo lokuguqula uphawu lwesandla lube umbhalo (backend for Uxhumano, the sign-to-text-to-speech accessibility tool).",
+    version="1.0.0",
+    lifespan=impilo_ye_app,
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 # --------------------------------------------------------------------------
