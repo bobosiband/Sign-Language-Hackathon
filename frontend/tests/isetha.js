@@ -28,6 +28,18 @@ if (typeof window.SpeechSynthesisUtterance === "undefined") {
 window.HTMLMediaElement.prototype.play = vi.fn().mockResolvedValue(undefined);
 window.HTMLMediaElement.prototype.pause = vi.fn();
 
+// I-jsdom ayisebenzisi i-canvas 2D context -- yenza i-stub engenzi lutho
+// (jsdom does not implement a 2D canvas context -- stub one out that
+// no-ops for any method the drawing code calls).
+window.HTMLCanvasElement.prototype.getContext = vi.fn(() =>
+  new Proxy(
+    {},
+    {
+      get: (into, igama) => (igama in into ? into[igama] : vi.fn()),
+    },
+  ),
+);
+
 afterEach(() => {
   vi.restoreAllMocks();
 });

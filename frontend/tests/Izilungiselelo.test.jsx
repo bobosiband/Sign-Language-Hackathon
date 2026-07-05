@@ -1,7 +1,7 @@
 // Ukuhlola iphaneli yezilungiselelo: ukuguqulwa kwamanani nokutholakala
 // kwe-ARIA (tests for the settings panel: value changes and ARIA presence).
 import { describe, expect, it, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import Izilungiselelo from "../src/components/Izilungiselelo";
 import { IZILUNGISELELO_EZIMISIWE } from "../src/data/izilungiseleloOkumisiwe";
@@ -17,7 +17,7 @@ describe("Izilungiselelo", () => {
     render(<Izilungiselelo izilungiselelo={IZILUNGISELELO_EZIMISIWE} shintsha={shintsha} amazwi={[]} />);
 
     const isilaidi = screen.getByLabelText(/hold duration/i);
-    fireChange(isilaidi, "30");
+    fireEvent.change(isilaidi, { target: { value: "30" } });
 
     expect(shintsha).toHaveBeenCalledWith("ubudeBokubamba", 30);
   });
@@ -38,8 +38,3 @@ describe("Izilungiselelo", () => {
     }
   });
 });
-
-function fireChange(ielementhi, inani) {
-  ielementhi.value = inani;
-  ielementhi.dispatchEvent(new Event("change", { bubbles: true }));
-}
