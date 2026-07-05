@@ -4,7 +4,7 @@
 // ngaphandle kwe-DOM (kept separate from the React hook so it can be unit
 // tested without any DOM).
 
-// Ibalo lamafrேamu okuphumula emva kokungeza uhlamvu, ukuvimbela ukuphindwa
+// Ibalo lamafreyimu okuphumula emva kokungeza uhlamvu, ukuvimbela ukuphindwa
 // ngephutha (frames of cooldown after a letter is appended, to avoid an
 // accidental instant repeat).
 export const UBUDE_BOKUPHUMULA_OKUMISIWE = 15;
@@ -16,6 +16,7 @@ export function isimoSokuqala() {
   return {
     umusho: "",
     uhlamvuAmanje: null,
+    ukuzethemba: 0,
     ibalo: 0,
     ibaloLokuphumula: 0,
     inqubekelaphambili: 0,
@@ -43,6 +44,7 @@ export function simamisaUmusho(isimo, isenzo, izilungiselelo) {
         return {
           ...isimo,
           uhlamvuAmanje: null,
+          ukuzethemba: 0,
           ibalo: 0,
           inqubekelaphambili: 0,
           okwenzekile: null,
@@ -53,6 +55,7 @@ export function simamisaUmusho(isimo, isenzo, izilungiselelo) {
         return {
           ...isimo,
           uhlamvuAmanje: uhlamvu,
+          ukuzethemba,
           ibaloLokuphumula: isimo.ibaloLokuphumula - 1,
           inqubekelaphambili: 0,
           okwenzekile: null,
@@ -67,6 +70,7 @@ export function simamisaUmusho(isimo, isenzo, izilungiselelo) {
           ...isimo,
           umusho: isimo.umusho + uhlamvu,
           uhlamvuAmanje: uhlamvu,
+          ukuzethemba,
           ibalo: 0,
           ibaloLokuphumula: UBUDE_BOKUPHUMULA_OKUMISIWE,
           inqubekelaphambili: 0,
@@ -77,6 +81,7 @@ export function simamisaUmusho(isimo, isenzo, izilungiselelo) {
       return {
         ...isimo,
         uhlamvuAmanje: uhlamvu,
+        ukuzethemba,
         ibalo: ibaloEsha,
         inqubekelaphambili: inqubekelaphambiliEsha,
         okwenzekile: null,
