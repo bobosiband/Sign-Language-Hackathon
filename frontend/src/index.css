@@ -13,6 +13,14 @@
   --uxhumano-ukugqama: #5b8cff;
   --uxhumano-isilinganiso-fonti: 1;
   --uxhumano-ukuguquka: 200ms ease;
+  /* Amabala enkinobho namasimu okufaka umbhalo, ahlukile kwe-umugqa/umbhalo
+     ukuze angaze afane, into engabangela umbhalo ongabonakali (button/input
+     surface colors kept distinct from the border/text colors so the two
+     can never collapse onto the same value and swallow the text). */
+  --uxhumano-inkinobho-ingemuva: var(--uxhumano-umugqa);
+  --uxhumano-inkinobho-umbhalo: var(--uxhumano-umbhalo);
+  --uxhumano-isimo-ingemuva: #ffffff;
+  --uxhumano-isimo-umbhalo: #12161f;
 }
 
 :root[data-umehluko="ophezulu"] {
@@ -25,6 +33,10 @@
   --uxhumano-oluphuthumayo: #ff3b3b;
   --uxhumano-oluxwayisayo: #ffd400;
   --uxhumano-ukugqama: #66aaff;
+  --uxhumano-inkinobho-ingemuva: #000000;
+  --uxhumano-inkinobho-umbhalo: #ffffff;
+  --uxhumano-isimo-ingemuva: #ffffff;
+  --uxhumano-isimo-umbhalo: #000000;
 }
 
 :root[data-ukunyakaza="ncipha"] * {
@@ -48,6 +60,19 @@ body {
 button, input, select {
   font: inherit;
   color: inherit;
+}
+
+select, input[type="text"] {
+  background: var(--uxhumano-ingemuva);
+  color: var(--uxhumano-umbhalo);
+  border: 1px solid var(--uxhumano-umugqa);
+  border-radius: 6px;
+  padding: 0.45rem 0.6rem;
+}
+
+select option {
+  background: var(--uxhumano-ingemuva);
+  color: var(--uxhumano-umbhalo);
 }
 
 a {
@@ -245,9 +270,9 @@ a {
 }
 
 button.inkinobho {
-  background: var(--uxhumano-umugqa);
-  border: 1px solid transparent;
-  color: var(--uxhumano-umbhalo);
+  background: var(--uxhumano-inkinobho-ingemuva);
+  border: 1px solid var(--uxhumano-umugqa);
+  color: var(--uxhumano-inkinobho-umbhalo);
   border-radius: 8px;
   padding: 0.55rem 1rem;
   cursor: pointer;
@@ -261,6 +286,7 @@ button.inkinobho:hover {
 button.inkinobho--eqavile {
   background: var(--uxhumano-ukugqama);
   color: #06122b;
+  border-color: var(--uxhumano-ukugqama);
 }
 
 button.inkinobho--eyingozi {

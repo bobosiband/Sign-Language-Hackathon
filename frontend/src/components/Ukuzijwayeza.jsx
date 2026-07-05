@@ -20,7 +20,7 @@ function UkugoqwaIbhasekhwama({ uhlamvu }) {
         <div
           key={AMAGAMA_EMINWE[indeksi]}
           className="ukugoqwa-ibha"
-          style={{ height: `${Math.round((1 - inani) * 100)}%` }}
+          style={{ height: `max(6px, ${Math.round((1 - inani) * 100)}%)` }}
           title={AMAGAMA_EMINWE[indeksi]}
         />
       ))}
